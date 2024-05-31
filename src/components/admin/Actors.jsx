@@ -1,103 +1,103 @@
-import React, { useEffect, useState } from "react";
-import { BsPencilSquare, BsTrash } from "react-icons/bs";
-import { deleteActor, getActors, searchActor } from "../../api/actor";
-import { useNotification, useSearch } from "../../hooks";
-import AppSearchForm from "../form/AppSearchForm";
-import ConfirmModal from "../models/ConfirmModal";
-import UpdateActor from "../models/UpdateActor";
-import NextAndPrevButton from "../NextAndPrevButton";
-import NotFoundText from "../NotFoundText";
+import React, { useEffect, useState } from "react"
+import { BsPencilSquare, BsTrash } from "react-icons/bs"
+import { deleteActor, getActors, searchActor } from "../../api/actor"
+import { useNotification, useSearch } from "../../hooks"
+import AppSearchForm from "../form/AppSearchForm"
+import ConfirmModal from "../models/ConfirmModal"
+import UpdateActor from "../models/UpdateActor"
+import NextAndPrevButton from "../NextAndPrevButton"
+import NotFoundText from "../NotFoundText"
 
-let currentPageNo = 0;
-const limit = 20;
+let currentPageNo = 0
+const limit = 20
 
 export default function Actors() {
-  const [actors, setActors] = useState([]);
-  const [results, setResults] = useState([]);
-  const [reachedToEnd, setReachedToEnd] = useState(false);
-  const [busy, setBusy] = useState(false);
-  const [showUpdateModal, setShowUpdateModal] = useState(false);
-  const [showConfirmModal, setShowConfirmModal] = useState(false);
-  const [selectedProfile, setSelectedProfile] = useState(null);
-  const { updateNotification } = useNotification();
-  const { handleSearch, resetSearch, resultNotFound } = useSearch();
+  const [actors, setActors] = useState([])
+  const [results, setResults] = useState([])
+  const [reachedToEnd, setReachedToEnd] = useState(false)
+  const [busy, setBusy] = useState(false)
+  const [showUpdateModal, setShowUpdateModal] = useState(false)
+  const [showConfirmModal, setShowConfirmModal] = useState(false)
+  const [selectedProfile, setSelectedProfile] = useState(null)
+  const { updateNotification } = useNotification()
+  const { handleSearch, resetSearch, resultNotFound } = useSearch()
 
   const fetchActors = async (pageNo) => {
-    const { profiles, error } = await getActors(pageNo, limit);
-    if (error) return updateNotification("error", error);
+    const { profiles, error } = await getActors(pageNo, limit)
+    if (error) return updateNotification("error", error)
 
     if (!profiles.length) {
-      currentPageNo = pageNo - 1;
-      return setReachedToEnd(true);
+      currentPageNo = pageNo - 1
+      return setReachedToEnd(true)
     }
 
-    setActors([...profiles]);
-  };
+    setActors([...profiles])
+  }
 
   const handleOnNextClick = () => {
-    if (reachedToEnd) return;
-    currentPageNo += 1;
-    fetchActors(currentPageNo);
-  };
+    if (reachedToEnd) return
+    currentPageNo += 1
+    fetchActors(currentPageNo)
+  }
 
   const handleOnPrevClick = () => {
-    if (currentPageNo <= 0) return;
-    if (reachedToEnd) setReachedToEnd(false);
+    if (currentPageNo <= 0) return
+    if (reachedToEnd) setReachedToEnd(false)
 
-    currentPageNo -= 1;
-    fetchActors(currentPageNo);
-  };
+    currentPageNo -= 1
+    fetchActors(currentPageNo)
+  }
 
   const handleOnEditClick = (profile) => {
-    setShowUpdateModal(true);
-    setSelectedProfile(profile);
-  };
+    setShowUpdateModal(true)
+    setSelectedProfile(profile)
+  }
 
   const hideUpdateModal = () => {
-    setShowUpdateModal(false);
-  };
+    setShowUpdateModal(false)
+  }
 
   const handleOnSearchSubmit = (value) => {
-    handleSearch(searchActor, value, setResults);
-  };
+    handleSearch(searchActor, value, setResults)
+  }
 
   const handleSearchFormReset = () => {
-    resetSearch();
-    setResults([]);
-  };
+    resetSearch()
+    setResults([])
+  }
 
   const handleOnActorUpdate = (profile) => {
     const updatedActors = actors.map((actor) => {
       if (profile.id === actor.id) {
-        return profile;
+        return profile
       }
 
-      return actor;
-    });
+      return actor
+    })
 
-    setActors([...updatedActors]);
-  };
+    setActors([...updatedActors])
+  }
 
   const handleOnDeleteClick = (profile) => {
-    setSelectedProfile(profile);
-    setShowConfirmModal(true);
-  };
+    setSelectedProfile(profile)
+    setShowConfirmModal(true)
+  }
 
   const handleOnDeleteConfirm = async () => {
-    setBusy(true);
-    const { error, message } = await deleteActor(selectedProfile.id);
-    setBusy(false);
-    if (error) return updateNotification("error", error);
-    updateNotification("success", message);
-    hideConfirmModal();
-    fetchActors(currentPageNo);
-  };
+    setBusy(true)
+    const { error, message } = await deleteActor(selectedProfile.id)
+    setBusy(false)
+    if (error) return updateNotification("error", error)
+    updateNotification("success", message)
+    hideConfirmModal()
+    fetchActors(currentPageNo)
+  }
 
-  const hideConfirmModal = () => setShowConfirmModal(false);
+  const hideConfirmModal = () => setShowConfirmModal(false)
 
   useEffect(() => {
-    fetchActors(currentPageNo);
-  }, []);
+    fetchActors(currentPageNo)
+  }, [])
 
   return (
     <>
@@ -157,30 +157,30 @@ export default function Actors() {
         onSuccess={handleOnActorUpdate}
       />
     </>
-  );
+  )
 }
 
 const ActorProfile = ({ profile, onEditClick, onDeleteClick }) => {
-  const [showOptions, setShowOptions] = useState(false);
-  const acceptedNameLength = 15;
+  const [showOptions, setShowOptions] = useState(false)
+  const acceptedNameLength = 15
 
   const handleOnMouseEnter = () => {
-    setShowOptions(true);
-  };
+    setShowOptions(true)
+  }
 
   const handleOnMouseLeave = () => {
-    setShowOptions(false);
-  };
+    setShowOptions(false)
+  }
 
   const getName = (name) => {
-    if (name.length <= acceptedNameLength) return name;
+    if (name.length <= acceptedNameLength) return name
 
-    return name.substring(0, acceptedNameLength) + "..";
-  };
+    return name.substring(0, acceptedNameLength) + ".."
+  }
 
-  const { name, about = "", avatar } = profile;
+  const { name, about = "", avatar } = profile
 
-  if (!profile) return null;
+  if (!profile) return null
 
   return (
     <div className="bg-white shadow dark:shadow dark:bg-secondary rounded h-20 overflow-hidden">
@@ -210,11 +210,11 @@ const ActorProfile = ({ profile, onEditClick, onDeleteClick }) => {
         />
       </div>
     </div>
-  );
-};
+  )
+}
 
 const Options = ({ visible, onDeleteClick, onEditClick }) => {
-  if (!visible) return null;
+  if (!visible) return null
 
   return (
     <div className="absolute inset-0 bg-primary bg-opacity-25 backdrop-blur-sm flex justify-center items-center space-x-5">
@@ -233,5 +233,5 @@ const Options = ({ visible, onDeleteClick, onEditClick }) => {
         <BsPencilSquare />
       </button>
     </div>
-  );
-};
+  )
+}
