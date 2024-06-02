@@ -26,9 +26,12 @@ export default function Navbar() {
           <ul className="flex items-center sm:space-x-4 space-x-2">
             <li>
               {isLoggedIn && (
-                <p className="text-white font-semibold text-lg cursor-pointer">
+                <Link
+                  to={"/watchlist"}
+                  className="text-white font-semibold text-lg cursor-pointer"
+                >
                   WatchList
-                </p>
+                </Link>
               )}
             </li>
             <li>

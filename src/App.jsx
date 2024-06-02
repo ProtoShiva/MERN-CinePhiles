@@ -13,6 +13,7 @@ import AdminNavigator from "./navigator/AdminNavigator.jsx"
 import SingleMovie from "./components/user/SingleMovie.jsx"
 import MovieReviews from "./components/user/MovieReviews.jsx"
 import SearchMovies from "./components/user/SearchMovies.jsx"
+import WatchList from "./components/user/WatchList.jsx"
 
 export default function App() {
   const { authInfo } = useAuth()
@@ -33,6 +34,7 @@ export default function App() {
         <Route path="/movie/:movieId" element={<SingleMovie />} />
         <Route path="/movie/reviews/:movieId" element={<MovieReviews />} />
         <Route path="/movie/search" element={<SearchMovies />} />
+        <Route path="/watchlist" element={<WatchList />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </>
