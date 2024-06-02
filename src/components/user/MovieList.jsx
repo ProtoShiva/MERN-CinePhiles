@@ -13,7 +13,7 @@ export default function MovieList({ title, movies = [] }) {
   if (!movies.length) return null
 
   return (
-    <div>
+    <div className=" mb-10">
       {title ? (
         <h1 className="text-2xl dark:text-white text-secondary font-semibold mb-5">
           {title}
@@ -33,7 +33,7 @@ const ListItem = ({ movie }) => {
   return (
     <Link to={"/movie/" + id}>
       <img
-        className="aspect-video object-cover w-full"
+        className="aspect-video object-cover w-full rounded-lg hover:scale-110 transition duration-300 ease-in-out"
         src={getPoster(responsivePosters) || poster}
         alt={title}
       />
