@@ -160,7 +160,7 @@ export const searchPublicMovies = async (title) => {
 
 export const getAllMovies = async () => {
   try {
-    const { data } = await client("/movie/movies/getMovies")
+    const { data } = await client("/movie/getMovies")
     return data
   } catch (error) {
     return catchError(error)

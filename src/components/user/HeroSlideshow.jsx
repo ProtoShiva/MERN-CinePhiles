@@ -7,6 +7,11 @@ import { useNotification } from "../../hooks"
 let count = 0
 let intervalId
 
+const trimStory = (text = "") => {
+  if (text.length <= 20) return text
+  return text.substring(0, 220) + "..."
+}
+
 export default function HeroSlideshow() {
   const [currentSlide, setCurrentSlide] = useState({})
   const [clonedSlide, setClonedSlide] = useState({})
@@ -97,6 +102,8 @@ export default function HeroSlideshow() {
           title={currentSlide.title}
           src={currentSlide.poster}
           id={currentSlide.id}
+          genres={currentSlide.genres}
+          storyline={currentSlide.storyLine}
         />
 
         {/* cloned slide */}
@@ -107,6 +114,8 @@ export default function HeroSlideshow() {
           src={clonedSlide.poster}
           title={clonedSlide.title}
           id={currentSlide.id}
+          genres={clonedSlide.genres}
+          storyline={clonedSlide.storyLine}
         />
 
         <SlideShowController
@@ -134,7 +143,8 @@ const SlideShowController = ({ onNextClick, onPrevClick }) => {
 }
 
 const Slide = forwardRef((props, ref) => {
-  const { title, id, src, className = "", ...rest } = props
+  const { title, id, src, className = "", storyline, genres, ...rest } = props
+  const genresString = genres?.join(" | ")
   return (
     <Link
       to={"/movie/" + id}
@@ -142,14 +152,20 @@ const Slide = forwardRef((props, ref) => {
       className={"w-full cursor-pointer block " + className}
       {...rest}
     >
-      {src ? (
-        <img className="w-full h-full object-cover" src={src} alt="" />
-      ) : null}
+      {src ? <img className="w-full  object-cover" src={src} alt="" /> : null}
       {title ? (
-        <div className="absolute inset-0 flex flex-col justify-end py-3 bg-gradient-to-t from-primary via-transparent">
-          <h1 className="font-semibold text-4xl text-highlight-dark mb-44">
-            {title}
-          </h1>
+        <div className="absolute inset-0 flex flex-col justify-end py-3 custom-gradient from-primary via-transparent">
+          <div className="absolute inset-0 translate-y-[65%]">
+            <h1 className="font-semibold text-4xl text-highlight-dark ml-4 ">
+              {title}
+            </h1>
+            <p className="text-highlight-dark ml-4 w-2/6 mt-2">
+              {trimStory(storyline)}
+            </p>
+            <p className="text-highlight-dark ml-4 w-full mt-2">
+              {genresString}
+            </p>
+          </div>
         </div>
       ) : null}
     </Link>

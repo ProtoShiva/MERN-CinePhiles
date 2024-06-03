@@ -1,34 +1,34 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react"
 import {
   deleteMovie,
   getMovieForUpdate,
   getMovies,
-  updateMovie,
-} from "../../api/movie";
-import { useMovies, useNotification } from "../../hooks";
-import ConfirmModal from "../models/ConfirmModal";
-import UpdateMovie from "../models/UpdateMovie";
-import MovieListItem from "../MovieListItem";
-import NextAndPrevButton from "../NextAndPrevButton";
+  updateMovie
+} from "../../api/movie"
+import { useMovies, useNotification } from "../../hooks"
+import ConfirmModal from "../models/ConfirmModal"
+import UpdateMovie from "../models/UpdateMovie"
+import MovieListItem from "../MovieListItem"
+import NextAndPrevButton from "../NextAndPrevButton"
 
-const limit = 10;
-let currentPageNo = 0;
+const limit = 10
+let currentPageNo = 0
 
 export default function Movies() {
-  const [movies, setMovies] = useState([]);
-  const [reachedToEnd, setReachedToEnd] = useState(false);
-  const [busy, setBusy] = useState(false);
-  const [showUpdateModal, setShowUpdateModal] = useState(false);
-  const [showConfirmModal, setShowConfirmModal] = useState(false);
-  const [selectedMovie, setSelectedMovie] = useState(null);
+  const [movies, setMovies] = useState([])
+  const [reachedToEnd, setReachedToEnd] = useState(false)
+  const [busy, setBusy] = useState(false)
+  const [showUpdateModal, setShowUpdateModal] = useState(false)
+  const [showConfirmModal, setShowConfirmModal] = useState(false)
+  const [selectedMovie, setSelectedMovie] = useState(null)
 
-  const { updateNotification } = useNotification();
+  const { updateNotification } = useNotification()
   const {
     fetchMovies,
     movies: newMovies,
     fetchPrevPage,
-    fetchNextPage,
-  } = useMovies();
+    fetchNextPage
+  } = useMovies()
 
   // const fetchMovies = async (pageNo) => {
   //   const { error, movies } = await getMovies(pageNo, limit);
@@ -93,12 +93,12 @@ export default function Movies() {
   // const hideConfirmModal = () => setShowConfirmModal(false);
 
   const handleUIUpdate = () => {
-    fetchMovies();
-  };
+    fetchMovies()
+  }
 
   useEffect(() => {
-    fetchMovies(currentPageNo);
-  }, []);
+    fetchMovies(currentPageNo)
+  }, [])
 
   return (
     <>
@@ -113,7 +113,7 @@ export default function Movies() {
               // onEditClick={() => handleOnEditClick(movie)}
               // onDeleteClick={() => handleOnDeleteClick(movie)}
             />
-          );
+          )
         })}
 
         <NextAndPrevButton
@@ -139,5 +139,5 @@ export default function Movies() {
         onClose={hideUpdateForm}
       /> */}
     </>
-  );
+  )
 }

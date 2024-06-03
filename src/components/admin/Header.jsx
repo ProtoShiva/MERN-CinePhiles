@@ -1,26 +1,26 @@
-import React, { useEffect, useRef, useState } from "react";
-import { AiOutlinePlus } from "react-icons/ai";
-import { BsFillSunFill } from "react-icons/bs";
-import { useNavigate } from "react-router-dom";
-import { useTheme } from "../../hooks";
-import AppSearchForm from "../form/AppSearchForm";
+import React, { useEffect, useRef, useState } from "react"
+import { AiOutlinePlus } from "react-icons/ai"
+import { BsFillSunFill } from "react-icons/bs"
+import { useNavigate } from "react-router-dom"
+import { useTheme } from "../../hooks"
+import AppSearchForm from "../form/AppSearchForm"
 
 export default function Header({ onAddActorClick, onAddMovieClick }) {
-  const [showOptions, setShowOptions] = useState(false);
-  const { toggleTheme } = useTheme();
+  const [showOptions, setShowOptions] = useState(false)
+  const { toggleTheme } = useTheme()
 
-  const navigate = useNavigate();
+  const navigate = useNavigate()
 
   const options = [
     { title: "Add Movie", onClick: onAddMovieClick },
-    { title: "Add Actor", onClick: onAddActorClick },
-  ];
+    { title: "Add Actor", onClick: onAddActorClick }
+  ]
 
   const handleSearchSubmit = (query) => {
-    if (!query.trim()) return;
+    if (!query.trim()) return
 
-    navigate("/search?title=" + query);
-  };
+    navigate("/search?title=" + query)
+  }
 
   return (
     <div className="flex items-center justify-between relative p-5">
@@ -52,43 +52,38 @@ export default function Header({ onAddActorClick, onAddMovieClick }) {
         />
       </div>
     </div>
-  );
+  )
 }
 
 const CreateOptions = ({ options, visible, onClose }) => {
-  const container = useRef();
-  const containerID = "options-container";
+  const container = useRef()
+  const containerID = "options-container"
 
   useEffect(() => {
     const handleClose = (e) => {
-      if (!visible) return;
-      const { parentElement, id } = e.target;
+      if (!visible) return
+      const { parentElement, id } = e.target
 
-      if (parentElement.id === containerID || id === containerID) return;
+      if (parentElement.id === containerID || id === containerID) return
 
-      // Old Code (Before React 18)
-      // container.current.classList.remove("animate-scale");
-      // container.current.classList.add("animate-scale-reverse");
-
-      // New Update
       if (container.current) {
         if (!container.current.classList.contains("animate-scale"))
-          container.current.classList.add("animate-scale-reverse");
+          container.current.classList.add("animate-scale-reverse")
       }
-    };
+    }
 
-    document.addEventListener("click", handleClose);
+    document.addEventListener("click", handleClose)
     return () => {
-      document.removeEventListener("click", handleClose);
-    };
-  }, [visible]);
+      document.removeEventListener("click", handleClose)
+    }
+  }, [visible])
 
   const handleClick = (fn) => {
-    fn();
-    onClose();
-  };
+    fn()
+    onClose()
+  }
 
-  if (!visible) return null;
+  if (!visible) return null
 
   return (
     <div
@@ -96,8 +91,8 @@ const CreateOptions = ({ options, visible, onClose }) => {
       ref={container}
       className="absolute right-0 z-50 top-12 flex flex-col space-y-3 p-5 dark:bg-secondary bg-white drop-shadow-lg rounded animate-scale"
       onAnimationEnd={(e) => {
-        if (e.target.classList.contains("animate-scale-reverse")) onClose();
-        e.target.classList.remove("animate-scale");
+        if (e.target.classList.contains("animate-scale-reverse")) onClose()
+        e.target.classList.remove("animate-scale")
       }}
     >
       {options.map(({ title, onClick }) => {
@@ -105,11 +100,11 @@ const CreateOptions = ({ options, visible, onClose }) => {
           <Option key={title} onClick={() => handleClick(onClick)}>
             {title}
           </Option>
-        );
+        )
       })}
     </div>
-  );
-};
+  )
+}
 
 const Option = ({ children, onClick }) => {
   return (
@@ -119,5 +114,5 @@ const Option = ({ children, onClick }) => {
     >
       {children}
     </button>
-  );
-};
+  )
+}

@@ -1,26 +1,26 @@
-import React, { useEffect, useState } from "react";
-import { useNotification } from "../../hooks";
+import React, { useEffect, useState } from "react"
+import { useNotification } from "../../hooks"
 import {
   languageOptions,
   statusOptions,
-  typeOptions,
-} from "../../utils/options";
-import { commonInputClasses } from "../../utils/theme";
-import { validateMovie } from "../../utils/validator";
-import DirectorSelector from "../DirectorSelector";
-import CastForm from "../form/CastForm";
-import Submit from "../form/Submit";
-import GenresSelector from "../GenresSelector";
-import Label from "../Label";
-import LabelWithBadge from "../LabelWithBadge";
-import CastModal from "../models/CastModal";
-import GenresModal from "../models/GenresModal";
-import WritersModal from "../models/WritersModal";
-import PosterSelector from "../PosterSelector";
-import Selector from "../Selector";
-import TagsInput from "../TagsInput";
-import ViewAllBtn from "../ViewAllButton";
-import WriterSelector from "../WriterSelector";
+  typeOptions
+} from "../../utils/options"
+import { commonInputClasses } from "../../utils/theme"
+import { validateMovie } from "../../utils/validator"
+import DirectorSelector from "../DirectorSelector"
+import CastForm from "../form/CastForm"
+import Submit from "../form/Submit"
+import GenresSelector from "../GenresSelector"
+import Label from "../Label"
+import LabelWithBadge from "../LabelWithBadge"
+import CastModal from "../models/CastModal"
+import GenresModal from "../models/GenresModal"
+import WritersModal from "../models/WritersModal"
+import PosterSelector from "../PosterSelector"
+import Selector from "../Selector"
+import TagsInput from "../TagsInput"
+import ViewAllBtn from "../ViewAllButton"
+import WriterSelector from "../WriterSelector"
 
 const defaultMovieInfo = {
   title: "",
@@ -34,33 +34,33 @@ const defaultMovieInfo = {
   genres: [],
   type: "",
   language: "",
-  status: "",
-};
+  status: ""
+}
 
 export default function MovieForm({ busy, btnTitle, initialState, onSubmit }) {
-  const [movieInfo, setMovieInfo] = useState({ ...defaultMovieInfo });
-  const [showWritersModal, setShowWritersModal] = useState(false);
-  const [showCastModal, setShowCastModal] = useState(false);
-  const [selectedPosterForUI, setSelectedPosterForUI] = useState("");
-  const [showGenresModal, setShowGenresModal] = useState(false);
+  const [movieInfo, setMovieInfo] = useState({ ...defaultMovieInfo })
+  const [showWritersModal, setShowWritersModal] = useState(false)
+  const [showCastModal, setShowCastModal] = useState(false)
+  const [selectedPosterForUI, setSelectedPosterForUI] = useState("")
+  const [showGenresModal, setShowGenresModal] = useState(false)
 
-  const { updateNotification } = useNotification();
+  const { updateNotification } = useNotification()
 
   const handleSubmit = (e) => {
-    e.preventDefault();
-    const { error } = validateMovie(movieInfo);
-    if (error) return updateNotification("error", error);
+    e.preventDefault()
+    const { error } = validateMovie(movieInfo)
+    if (error) return updateNotification("error", error)
 
     // cast, tags, genres, writers
-    const { tags, genres, cast, writers, director, poster } = movieInfo;
+    const { tags, genres, cast, writers, director, poster } = movieInfo
 
-    const formData = new FormData();
+    const formData = new FormData()
     const finalMovieInfo = {
-      ...movieInfo,
-    };
+      ...movieInfo
+    }
 
-    finalMovieInfo.tags = JSON.stringify(tags);
-    finalMovieInfo.genres = JSON.stringify(genres);
+    finalMovieInfo.tags = JSON.stringify(tags)
+    finalMovieInfo.genres = JSON.stringify(genres)
 
     // {
     //   actor: { type: mongoose.Schema.Types.ObjectId, ref: "Actor" },
@@ -71,119 +71,119 @@ export default function MovieForm({ busy, btnTitle, initialState, onSubmit }) {
     const finalCast = cast.map((c) => ({
       actor: c.profile.id,
       roleAs: c.roleAs,
-      leadActor: c.leadActor,
-    }));
-    finalMovieInfo.cast = JSON.stringify(finalCast);
+      leadActor: c.leadActor
+    }))
+    finalMovieInfo.cast = JSON.stringify(finalCast)
 
     if (writers.length) {
-      const finalWriters = writers.map((w) => w.id);
-      finalMovieInfo.writers = JSON.stringify(finalWriters);
+      const finalWriters = writers.map((w) => w.id)
+      finalMovieInfo.writers = JSON.stringify(finalWriters)
     }
 
-    if (director.id) finalMovieInfo.director = director.id;
-    if (poster) finalMovieInfo.poster = poster;
+    if (director.id) finalMovieInfo.director = director.id
+    if (poster) finalMovieInfo.poster = poster
 
     for (let key in finalMovieInfo) {
-      formData.append(key, finalMovieInfo[key]);
+      formData.append(key, finalMovieInfo[key])
     }
 
-    onSubmit(formData);
-  };
+    onSubmit(formData)
+  }
 
   const updatePosterForUI = (file) => {
-    const url = URL.createObjectURL(file);
-    setSelectedPosterForUI(url);
-  };
+    const url = URL.createObjectURL(file)
+    setSelectedPosterForUI(url)
+  }
 
   const handleChange = ({ target }) => {
-    const { value, name, files } = target;
+    const { value, name, files } = target
     if (name === "poster") {
-      const poster = files[0];
-      updatePosterForUI(poster);
-      return setMovieInfo({ ...movieInfo, poster });
+      const poster = files[0]
+      updatePosterForUI(poster)
+      return setMovieInfo({ ...movieInfo, poster })
     }
 
-    setMovieInfo({ ...movieInfo, [name]: value });
-  };
+    setMovieInfo({ ...movieInfo, [name]: value })
+  }
 
   const updateTags = (tags) => {
-    setMovieInfo({ ...movieInfo, tags });
-  };
+    setMovieInfo({ ...movieInfo, tags })
+  }
 
   const updateDirector = (profile) => {
-    setMovieInfo({ ...movieInfo, director: profile });
-  };
+    setMovieInfo({ ...movieInfo, director: profile })
+  }
 
   const updateCast = (castInfo) => {
-    const { cast } = movieInfo;
-    setMovieInfo({ ...movieInfo, cast: [...cast, castInfo] });
-  };
+    const { cast } = movieInfo
+    setMovieInfo({ ...movieInfo, cast: [...cast, castInfo] })
+  }
 
   const updateGenres = (genres) => {
-    setMovieInfo({ ...movieInfo, genres });
-  };
+    setMovieInfo({ ...movieInfo, genres })
+  }
 
   const updateWriters = (profile) => {
-    const { writers } = movieInfo;
+    const { writers } = movieInfo
     for (let writer of writers) {
       if (writer.id === profile.id) {
         return updateNotification(
           "warning",
           "This profile is already selected!"
-        );
+        )
       }
     }
-    setMovieInfo({ ...movieInfo, writers: [...writers, profile] });
-  };
+    setMovieInfo({ ...movieInfo, writers: [...writers, profile] })
+  }
 
   const hideWritersModal = () => {
-    setShowWritersModal(false);
-  };
+    setShowWritersModal(false)
+  }
 
   const displayWritersModal = () => {
-    setShowWritersModal(true);
-  };
+    setShowWritersModal(true)
+  }
 
   const hideCastModal = () => {
-    setShowCastModal(false);
-  };
+    setShowCastModal(false)
+  }
 
   const displayCastModal = () => {
-    setShowCastModal(true);
-  };
+    setShowCastModal(true)
+  }
 
   const hideGenresModal = () => {
-    setShowGenresModal(false);
-  };
+    setShowGenresModal(false)
+  }
 
   const displayGenresModal = () => {
-    setShowGenresModal(true);
-  };
+    setShowGenresModal(true)
+  }
 
   const handleWriterRemove = (profileId) => {
-    const { writers } = movieInfo;
-    const newWriters = writers.filter(({ id }) => id !== profileId);
-    if (!newWriters.length) hideWritersModal();
-    setMovieInfo({ ...movieInfo, writers: [...newWriters] });
-  };
+    const { writers } = movieInfo
+    const newWriters = writers.filter(({ id }) => id !== profileId)
+    if (!newWriters.length) hideWritersModal()
+    setMovieInfo({ ...movieInfo, writers: [...newWriters] })
+  }
 
   const handleCastRemove = (profileId) => {
-    const { cast } = movieInfo;
-    const newCast = cast.filter(({ profile }) => profile.id !== profileId);
-    if (!newCast.length) hideCastModal();
-    setMovieInfo({ ...movieInfo, cast: [...newCast] });
-  };
+    const { cast } = movieInfo
+    const newCast = cast.filter(({ profile }) => profile.id !== profileId)
+    if (!newCast.length) hideCastModal()
+    setMovieInfo({ ...movieInfo, cast: [...newCast] })
+  }
 
   useEffect(() => {
     if (initialState) {
       setMovieInfo({
         ...initialState,
         releseDate: initialState.releseDate.split("T")[0],
-        poster: null,
-      });
-      setSelectedPosterForUI(initialState.poster);
+        poster: null
+      })
+      setSelectedPosterForUI(initialState.poster)
     }
-  }, [initialState]);
+  }, [initialState])
 
   const {
     title,
@@ -195,8 +195,8 @@ export default function MovieForm({ busy, btnTitle, initialState, onSubmit }) {
     genres,
     type,
     language,
-    status,
-  } = movieInfo;
+    status
+  } = movieInfo
 
   return (
     <>
@@ -332,5 +332,5 @@ export default function MovieForm({ busy, btnTitle, initialState, onSubmit }) {
         previousSelection={genres}
       />
     </>
-  );
+  )
 }

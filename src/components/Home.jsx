@@ -9,14 +9,10 @@ import TopRatedWebSeries from "./user/TopRatedWebSeries"
 export default function Home() {
   return (
     <div className="dark:bg-primary bg-white">
-      <div className="bg-primary  min-h-screen">
+      <div className="bg-primary ">
         <HeroSlideshow />
       </div>
       <Container className="px-2 xl:p-0">
-        <NotVerified />
-        {/* slider */}
-
-        {/* Most rated movies */}
         <div className="space-y-3 py-8 dark:bg-primary bg-white ">
           <TopRatedMovies />
           <TopRatedWebSeries />

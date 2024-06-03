@@ -33,7 +33,6 @@ export default function AuthProvider({ children }) {
       isLoggedIn: true,
       error: ""
     })
-    console.log(authInfo)
 
     localStorage.setItem("auth-token", user.token)
   }

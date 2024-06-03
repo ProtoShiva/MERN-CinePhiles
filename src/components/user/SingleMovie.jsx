@@ -25,6 +25,7 @@ export default function SingleMovie() {
   const { updateNotification } = useNotification()
   const { authInfo } = useAuth()
   const { isLoggedIn } = authInfo
+  const profileId = authInfo?.profile?.id
 
   const navigate = useNavigate()
 
@@ -54,8 +55,8 @@ export default function SingleMovie() {
     setShowProfileModal(false)
   }
 
-  const handleOnRatingSuccess = (reviews) => {
-    setMovie({ ...movie, reviews: { ...reviews } })
+  const handleOnRatingSuccess = (reviewsNo) => {
+    setMovie({ ...movie, reviewsNo: { ...reviewsNo } })
   }
 
   useEffect(() => {
@@ -81,7 +82,8 @@ export default function SingleMovie() {
     releseDate,
     type,
     director = {},
-    reviews = {},
+    reviewsNo = {},
+    reviews = [],
     writers = [],
     cast = [],
     genres = []
@@ -96,11 +98,12 @@ export default function SingleMovie() {
             {title}
           </h1>
           <div className="flex flex-col items-end">
-            <RatingStar rating={reviews.ratingAvg} />
+            <RatingStar rating={reviewsNo.ratingAvg} />
             <CustomButtonLink
-              label={convertReviewCount(reviews.reviewCount) + " Reviews"}
+              label={convertReviewCount(reviewsNo.reviewCount) + " Reviews"}
               onClick={() => navigate("/movie/reviews/" + id)}
             />
+
             <CustomButtonLink
               label="Rate the movie"
               onClick={handleOnRateMovie}
@@ -150,7 +153,7 @@ export default function SingleMovie() {
             />
           </ListWithLabel>
 
-          <ListWithLabel label="Cast:">
+          <ListWithLabel label="Genre:">
             {genres.map((g) => (
               <CustomButtonLink label={g} key={g} clickable={false} />
             ))}

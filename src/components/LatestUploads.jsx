@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from "react";
-import { deleteMovie, getMovieForUpdate, getMovies } from "../api/movie";
-import { useMovies, useNotification } from "../hooks";
-import ConfirmModal from "./models/ConfirmModal";
-import UpdateMovie from "./models/UpdateMovie";
-import MovieListItem from "./MovieListItem";
+import React, { useState, useEffect } from "react"
+import { deleteMovie, getMovieForUpdate, getMovies } from "../api/movie"
+import { useMovies, useNotification } from "../hooks"
+import ConfirmModal from "./models/ConfirmModal"
+import UpdateMovie from "./models/UpdateMovie"
+import MovieListItem from "./MovieListItem"
 
-const pageNo = 0;
-const limit = 5;
+const pageNo = 0
+const limit = 5
 
 export default function LatestUploads() {
   // const [movies, setMovies] = useState([]);
@@ -16,7 +16,7 @@ export default function LatestUploads() {
   // const [selectedMovie, setSelectedMovie] = useState(null);
   // const { updateNotification } = useNotification();
 
-  const { fetchLatestUploads, latestUploads } = useMovies();
+  const { fetchLatestUploads, latestUploads } = useMovies()
 
   // const fetchLatestUploads = async () => {
   //   const { error, movies } = await getMovies(pageNo, limit);
@@ -63,11 +63,11 @@ export default function LatestUploads() {
   // const hideConfirmModal = () => setShowConfirmModal(false);
   // const hideUpdateModal = () => setShowUpdateModal(false);
 
-  const handleUIUpdate = () => fetchLatestUploads();
+  const handleUIUpdate = () => fetchLatestUploads()
 
   useEffect(() => {
-    fetchLatestUploads();
-  }, []);
+    fetchLatestUploads()
+  }, [])
 
   return (
     <>
@@ -87,7 +87,7 @@ export default function LatestUploads() {
                 // onDeleteClick={() => handleOnDeleteClick(movie)}
                 // onEditClick={() => handleOnEditClick(movie)}
               />
-            );
+            )
           })}
         </div>
       </div>
@@ -108,5 +108,5 @@ export default function LatestUploads() {
         onSuccess={handleOnUpdate}
       /> */}
     </>
-  );
+  )
 }

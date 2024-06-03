@@ -1,44 +1,44 @@
-import React, { useState } from "react";
-import { BsTrash, BsPencilSquare, BsBoxArrowUpRight } from "react-icons/bs";
-import { deleteMovie } from "../api/movie";
-import { useNotification } from "../hooks";
-import { getPoster } from "../utils/helper";
-import ConfirmModal from "./models/ConfirmModal";
-import UpdateMovie from "./models/UpdateMovie";
+import React, { useState } from "react"
+import { BsTrash, BsPencilSquare, BsBoxArrowUpRight } from "react-icons/bs"
+import { deleteMovie } from "../api/movie"
+import { useNotification } from "../hooks"
+import { getPoster } from "../utils/helper"
+import ConfirmModal from "./models/ConfirmModal"
+import UpdateMovie from "./models/UpdateMovie"
 
 const MovieListItem = ({ movie, afterDelete, afterUpdate }) => {
-  const [showConfirmModal, setShowConfirmModal] = useState(false);
-  const [showUpdateModal, setShowUpdateModal] = useState(false);
-  const [busy, setBusy] = useState(false);
-  const [selectedMovieId, setSelectedMovieId] = useState(null);
+  const [showConfirmModal, setShowConfirmModal] = useState(false)
+  const [showUpdateModal, setShowUpdateModal] = useState(false)
+  const [busy, setBusy] = useState(false)
+  const [selectedMovieId, setSelectedMovieId] = useState(null)
 
-  const { updateNotification } = useNotification();
+  const { updateNotification } = useNotification()
 
   const handleOnDeleteConfirm = async () => {
-    setBusy(true);
-    const { error, message } = await deleteMovie(movie.id);
-    setBusy(false);
+    setBusy(true)
+    const { error, message } = await deleteMovie(movie.id)
+    setBusy(false)
 
-    if (error) return updateNotification("error", error);
+    if (error) return updateNotification("error", error)
 
-    hideConfirmModal();
-    updateNotification("success", message);
-    afterDelete(movie);
-  };
+    hideConfirmModal()
+    updateNotification("success", message)
+    afterDelete(movie)
+  }
 
   const handleOnEditClick = () => {
-    setShowUpdateModal(true);
-    setSelectedMovieId(movie.id);
-  };
+    setShowUpdateModal(true)
+    setSelectedMovieId(movie.id)
+  }
 
   const handleOnUpdate = (movie) => {
-    afterUpdate(movie);
-    setShowUpdateModal(false);
-    setSelectedMovieId(null);
-  };
+    afterUpdate(movie)
+    setShowUpdateModal(false)
+    setSelectedMovieId(null)
+  }
 
-  const displayConfirmModal = () => setShowConfirmModal(true);
-  const hideConfirmModal = () => setShowConfirmModal(false);
+  const displayConfirmModal = () => setShowConfirmModal(true)
+  const hideConfirmModal = () => setShowConfirmModal(false)
 
   return (
     <>
@@ -63,11 +63,11 @@ const MovieListItem = ({ movie, afterDelete, afterUpdate }) => {
         />
       </div>
     </>
-  );
-};
+  )
+}
 
 const MovieCard = ({ movie, onDeleteClick, onEditClick, onOpenClick }) => {
-  const { poster, title, responsivePosters, genres = [], status } = movie;
+  const { poster, title, responsivePosters, genres = [], status } = movie
   return (
     <table className="w-full border-b">
       <tbody>
@@ -96,7 +96,7 @@ const MovieCard = ({ movie, onDeleteClick, onEditClick, onOpenClick }) => {
                     >
                       {g}
                     </span>
-                  );
+                  )
                 })}
               </div>
             </div>
@@ -122,7 +122,7 @@ const MovieCard = ({ movie, onDeleteClick, onEditClick, onOpenClick }) => {
         </tr>
       </tbody>
     </table>
-  );
-};
+  )
+}
 
-export default MovieListItem;
+export default MovieListItem

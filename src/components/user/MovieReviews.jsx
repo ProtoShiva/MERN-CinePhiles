@@ -1,107 +1,107 @@
-import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import { BsTrash, BsPencilSquare } from "react-icons/bs";
+import React, { useEffect, useState } from "react"
+import { useParams } from "react-router-dom"
+import { BsTrash, BsPencilSquare } from "react-icons/bs"
 
-import { deleteReview, getReviewByMovie } from "../../api/review";
-import { useAuth, useNotification } from "../../hooks";
-import Container from "../Container";
-import CustomButtonLink from "../CustomButtonLink";
-import RatingStar from "../RatingStar";
-import ConfirmModal from "../models/ConfirmModal";
-import NotFoundText from "../NotFoundText";
-import EditRatingModal from "../models/EditRatingModal";
+import { deleteReview, getReviewByMovie } from "../../api/review"
+import { useAuth, useNotification } from "../../hooks"
+import Container from "../Container"
+import CustomButtonLink from "../CustomButtonLink"
+import RatingStar from "../RatingStar"
+import ConfirmModal from "../models/ConfirmModal"
+import NotFoundText from "../NotFoundText"
+import EditRatingModal from "../models/EditRatingModal"
 
 const getNameInitial = (name = "") => {
-  return name[0].toUpperCase();
-};
+  return name[0].toUpperCase()
+}
 
 export default function MovieReviews() {
-  const [reviews, setReviews] = useState([]);
-  const [movieTitle, setMovieTitle] = useState("");
-  const [profileOwnersReview, setProfileOwnersReview] = useState(null);
-  const [showConfirmModal, setShowConfirmModal] = useState(false);
-  const [showEditModal, setShowEditModal] = useState(false);
-  const [selectedReview, setSelectedReview] = useState(null);
-  const [busy, setBusy] = useState(false);
+  const [reviews, setReviews] = useState([])
+  const [movieTitle, setMovieTitle] = useState("")
+  const [profileOwnersReview, setProfileOwnersReview] = useState(null)
+  const [showConfirmModal, setShowConfirmModal] = useState(false)
+  const [showEditModal, setShowEditModal] = useState(false)
+  const [selectedReview, setSelectedReview] = useState(null)
+  const [busy, setBusy] = useState(false)
 
-  const { movieId } = useParams();
-  const { authInfo } = useAuth();
-  const profileId = authInfo.profile?.id;
+  const { movieId } = useParams()
+  const { authInfo } = useAuth()
+  const profileId = authInfo.profile?.id
 
-  const { updateNotification } = useNotification();
+  const { updateNotification } = useNotification()
 
   const fetchReviews = async () => {
-    const { movie, error } = await getReviewByMovie(movieId);
-    if (error) return updateNotification("error", error);
+    const { movie, error } = await getReviewByMovie(movieId)
+    if (error) return updateNotification("error", error)
 
-    setReviews([...movie.reviews]);
-    setMovieTitle(movie.title);
-  };
+    setReviews([...movie.reviews])
+    setMovieTitle(movie.title)
+  }
 
   const findProfileOwnersReview = () => {
-    if (profileOwnersReview) return setProfileOwnersReview(null);
+    if (profileOwnersReview) return setProfileOwnersReview(null)
 
-    const matched = reviews.find((review) => review.owner.id === profileId);
+    const matched = reviews.find((review) => review.owner.id === profileId)
     if (!matched)
-      return updateNotification("error", "You don't have any review!");
+      return updateNotification("error", "You don't have any review!")
 
-    setProfileOwnersReview(matched);
-  };
+    setProfileOwnersReview(matched)
+  }
 
   const handleOnEditClick = () => {
-    const { id, content, rating } = profileOwnersReview;
+    const { id, content, rating } = profileOwnersReview
     setSelectedReview({
       id,
       content,
-      rating,
-    });
+      rating
+    })
 
-    setShowEditModal(true);
-  };
+    setShowEditModal(true)
+  }
 
   const handleDeleteConfirm = async () => {
-    setBusy(true);
-    const { error, message } = await deleteReview(profileOwnersReview.id);
-    setBusy(false);
-    if (error) return updateNotification("error", error);
+    setBusy(true)
+    const { error, message } = await deleteReview(profileOwnersReview.id)
+    setBusy(false)
+    if (error) return updateNotification("error", error)
 
-    updateNotification("success", message);
+    updateNotification("success", message)
 
     const updatedReviews = reviews.filter(
       (r) => r.id !== profileOwnersReview.id
-    );
-    setReviews([...updatedReviews]);
-    setProfileOwnersReview(null);
-    hideConfirmModal();
-  };
+    )
+    setReviews([...updatedReviews])
+    setProfileOwnersReview(null)
+    hideConfirmModal()
+  }
 
   const handleOnReviewUpdate = (review) => {
     const updatedReview = {
       ...profileOwnersReview,
       rating: review.rating,
-      content: review.content,
-    };
+      content: review.content
+    }
 
-    setProfileOwnersReview({ ...updatedReview });
+    setProfileOwnersReview({ ...updatedReview })
 
     const newReviews = reviews.map((r) => {
-      if (r.id === updatedReview.id) return updatedReview;
-      return r;
-    });
+      if (r.id === updatedReview.id) return updatedReview
+      return r
+    })
 
-    setReviews([...newReviews]);
-  };
+    setReviews([...newReviews])
+  }
 
-  const displayConfirmModal = () => setShowConfirmModal(true);
-  const hideConfirmModal = () => setShowConfirmModal(false);
+  const displayConfirmModal = () => setShowConfirmModal(true)
+  const hideConfirmModal = () => setShowConfirmModal(false)
   const hideEditModal = () => {
-    setShowEditModal(false);
-    setSelectedReview(null);
-  };
+    setShowEditModal(false)
+    setSelectedReview(null)
+  }
 
   useEffect(() => {
-    if (movieId) fetchReviews();
-  }, [movieId]);
+    if (movieId) fetchReviews()
+  }, [movieId])
 
   return (
     <div className="dark:bg-primary bg-white min-h-screen pb-10">
@@ -161,13 +161,13 @@ export default function MovieReviews() {
         onClose={hideEditModal}
       />
     </div>
-  );
+  )
 }
 
 const ReviewCard = ({ review }) => {
-  if (!review) return null;
+  if (!review) return null
 
-  const { owner, content, rating } = review;
+  const { owner, content, rating } = review
   return (
     <div className="flex space-x-3">
       <div className="flex items-center justify-center w-14 h-14 rounded-full bg-light-subtle dark:bg-dark-subtle text-white text-xl select-none">
@@ -181,5 +181,5 @@ const ReviewCard = ({ review }) => {
         <p className="text-light-subtle dark:text-dark-subtle">{content}</p>
       </div>
     </div>
-  );
-};
+  )
+}
