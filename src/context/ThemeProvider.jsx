@@ -11,6 +11,7 @@ export default function ThemeProvider({ children }) {
     const newTheme = oldTheme === defaultTheme ? darkTheme : defaultTheme
 
     updateTheme(newTheme, oldTheme)
+    console.log("clicked")
   }
 
   useEffect(() => {

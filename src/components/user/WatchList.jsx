@@ -67,7 +67,7 @@ const WatchList = () => {
           {" "}
           {firstName}'s Watchlist
         </h1>
-        <div className="grid lg:grid-cols-5 md:grid-cols-2 grid-cols-1 gap-8 px-5">
+        <div className="grid lg:grid-cols-5 md:grid-cols-2 grid-cols-2 gap-8 px-5">
           {savedMovies?.map((mov) => (
             <div key={mov._id}>
               <div

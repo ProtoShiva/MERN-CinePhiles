@@ -129,9 +129,9 @@ export default function HeroSlideshow() {
 
 const SlideShowController = ({ onNextClick, onPrevClick }) => {
   const btnClass =
-    "text-white text-8xl p-2 outline-none opacity-50 hover:opacity-100 transition duration-500 ease-in-out"
+    "text-white sm:text-8xl text-6xl p-2 outline-none opacity-50 hover:opacity-100 transition duration-500 ease-in-out"
   return (
-    <div className="absolute top-1/2 -translate-y-1/2 w-full flex items-center justify-between px-2">
+    <div className="absolute top-1/2 -translate-y-1/2 w-full flex items-center justify-between px-2 ">
       <button onClick={onPrevClick} className={btnClass} type="button">
         <MdNavigateBefore />
       </button>
@@ -155,14 +155,14 @@ const Slide = forwardRef((props, ref) => {
       {src ? <img className="w-full  object-cover" src={src} alt="" /> : null}
       {title ? (
         <div className="absolute inset-0 flex flex-col justify-end py-3 custom-gradient from-primary via-transparent">
-          <div className="absolute inset-0 translate-y-[65%]">
-            <h1 className="font-semibold text-4xl text-highlight-dark ml-4 ">
+          <div className="absolute inset-0 translate-y-[65%] ">
+            <h1 className="font-semibold md:text-6xl text-[1.7rem] text-highlight-dark ml-4 ">
               {title}
             </h1>
-            <p className="text-highlight-dark ml-4 w-2/6 mt-2">
+            <p className="text-highlight-dark ml-4 md:w-2/6 md:text-2xl response mt-2">
               {trimStory(storyline)}
             </p>
-            <p className="text-highlight-dark ml-4 w-full mt-2">
+            <p className="text-highlight-dark ml-4 text-[1rem] w-full mt-2 md:mt-8 md:text-[1.4rem]">
               {genresString}
             </p>
           </div>

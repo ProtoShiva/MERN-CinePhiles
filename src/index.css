@@ -129,6 +129,25 @@
     var(--tw-gradient-to, rgba(255, 255, 255, 0));
 }
 
+@media screen and (max-width: 972px) {
+  .response {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 535px) {
+  .slides {
+    width: 90px;
+    height: 30px;
+  }
+}
+
+@media (max-width: 1296px) {
+  .your-class {
+    padding: 0rem 1rem;
+  }
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

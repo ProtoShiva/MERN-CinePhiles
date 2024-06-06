@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react"
 import { Link, useNavigate, useParams } from "react-router-dom"
 import { getSingleMovie } from "../../api/movie"
+import { LuPopcorn } from "react-icons/lu"
 import { useAuth, useNotification } from "../../hooks"
 import { convertReviewCount } from "../../utils/helper"
 import Container from "../Container"
@@ -66,9 +67,10 @@ export default function SingleMovie() {
   if (!ready)
     return (
       <div className="h-screen flex justify-center items-center dark:bg-primary bg-white">
-        <p className="text-light-subtle dark:text-dark-subtle animate-pulse">
-          Please wait
-        </p>
+        <div className="text-light-subtle dark:text-dark-subtle animate-pulse text-2xl flex items-center">
+          <LuPopcorn className="text-yellow-400" />
+          <p>Please wait</p>
+        </div>
       </div>
     )
 
@@ -92,7 +94,7 @@ export default function SingleMovie() {
   return (
     <div className="dark:bg-primary bg-white min-h-screen pb-10">
       <Container className="xl:px-0 px-2">
-        <video poster={poster} controls src={trailer}></video>
+        <video poster={poster} controls src={trailer} autoPlay muted></video>
         <div className="flex justify-between">
           <h1 className="xl:text-4xl lg:text-3xl text-2xl  text-highlight dark:text-highlight-dark font-semibold py-3">
             {title}
@@ -163,7 +165,7 @@ export default function SingleMovie() {
             <CustomButtonLink label={type} clickable={false} />
           </ListWithLabel>
 
-          <CastProfiles cast={cast} />
+          <CastProfiles cast={cast} handleProfileClick={handleProfileClick} />
           <RelatedMovies movieId={movieId} />
         </div>
       </Container>
@@ -194,7 +196,7 @@ const ListWithLabel = ({ children, label }) => {
   )
 }
 
-const CastProfiles = ({ cast, onProfileClick }) => {
+const CastProfiles = ({ cast, handleProfileClick }) => {
   return (
     <div className="">
       <h1 className="text-light-subtle dark:text-dark-subtle font-semibold text-2xl mb-2">
@@ -213,7 +215,11 @@ const CastProfiles = ({ cast, onProfileClick }) => {
                 alt=""
               />
 
-              <CustomButtonLink label={profile.name} />
+              <CustomButtonLink
+                label={profile.name}
+                onClick={() => handleProfileClick(profile)}
+                key={id}
+              />
               <p className="text-light-subtle dark:text-dark-subtle w-max">
                 {roleAs}
               </p>

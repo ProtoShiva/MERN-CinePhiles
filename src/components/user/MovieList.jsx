@@ -11,9 +11,8 @@ import {
   userDetailsAction
 } from "../../redux/slices/users/usersSlices.js"
 import { useAuth } from "../../hooks/index.js"
-import Slider from "react-slick"
-import "slick-carousel/slick/slick.css"
-import "slick-carousel/slick/slick-theme.css"
+import Carousel from "react-multi-carousel"
+import "react-multi-carousel/lib/styles.css"
 
 const trimTitle = (text = "") => {
   if (text.length <= 20) return text
@@ -22,78 +21,40 @@ const trimTitle = (text = "") => {
 
 export default function MovieList({ title, movies = [] }) {
   if (!movies.length) return null
-
-  function SampleNextArrow(props) {
-    const { className, style, onClick } = props
-    return (
-      <div
-        className={`${className} bg-gray-500 rounded-full dark:bg-black hover:bg-primary`} // Tailwind CSS classes for color
-        style={{ ...style, display: "block" }}
-        onClick={onClick}
-      />
-    )
+  const responsive = {
+    desktop: {
+      breakpoint: { max: 3000, min: 1024 },
+      items: 4,
+      slidesToSlide: 4 // optional, default to 1.
+    },
+    tablet: {
+      breakpoint: { max: 1024, min: 464 },
+      items: 3,
+      slidesToSlide: 3 // optional, default to 1.
+    },
+    mobile: {
+      breakpoint: { max: 464, min: 0 },
+      items: 2,
+      slidesToSlide: 1 // optional, default to 1.
+    }
   }
 
-  function SamplePrevArrow(props) {
-    const { className, style, onClick } = props
-    return (
-      <div
-        className={`${className} bg-gray-500 rounded-full dark:bg-black hover:bg-primary`} // Tailwind CSS classes for color
-        style={{ ...style, display: "block" }}
-        onClick={onClick}
-      />
-    )
-  }
-
-  let settings = {
-    dots: true,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 5,
-    slidesToScroll: 5,
-    initialSlide: 0,
-    nextArrow: <SampleNextArrow />,
-    prevArrow: <SamplePrevArrow />,
-    responsive: [
-      {
-        breakpoint: 1024,
-        settings: {
-          slidesToShow: 3,
-          slidesToScroll: 3,
-          infinite: true,
-          dots: true
-        }
-      },
-      {
-        breakpoint: 600,
-        settings: {
-          slidesToShow: 2,
-          slidesToScroll: 2,
-          initialSlide: 2
-        }
-      },
-      {
-        breakpoint: 480,
-        settings: {
-          slidesToShow: 1,
-          slidesToScroll: 1
-        }
-      }
-    ]
-  }
   return (
     <div className=" mb-10">
       {title ? (
-        <h1 className="text-2xl dark:text-white text-secondary font-semibold mb-5">
+        <h1 className="text-[1.2rem] md:text-3xl pl-4  md:p-0 dark:text-white text-secondary font-semibold mb-5">
           {title}
         </h1>
       ) : null}
 
-      <Slider {...settings}>
+      <Carousel
+        responsive={responsive}
+        removeArrowOnDeviceType={["tablet", "mobile"]}
+      >
         {movies.map((movie) => {
           return <ListItem key={movie.id} movie={movie} />
         })}
-      </Slider>
+      </Carousel>
     </div>
   )
 }
@@ -122,12 +83,14 @@ const ListItem = ({ movie }) => {
   }
 
   const handleBookMovies = async (idBack) => {
+    if (!isLoggedIn) return
     dispatch(saveProductAction(idBack))
     dispatch(userDetailsAction())
     dispatch(userDetailsAction())
   }
 
   const handleUnbookMovie = async (idBack) => {
+    if (!isLoggedIn) return
     dispatch(unsaveProductAction(idBack))
     dispatch(userDetailsAction())
     dispatch(userDetailsAction())
@@ -142,21 +105,21 @@ const ListItem = ({ movie }) => {
   return (
     <div>
       <div
-        className="relative"
+        className="relative your-class"
         onMouseEnter={handleOnMouseEnter}
         onMouseLeave={handleOnMouseLeave}
       >
         <img
-          className="aspect-video object-cover w-full rounded-lg"
+          className="aspect-video object-cover w-[18rem] h-[10rem] rounded-lg "
           src={getPoster(responsivePosters) || poster}
           alt={title}
         />
         {showBook && (
-          <div className="absolute inset-0 bg-primary bg-opacity-25 backdrop-blur-sm flex justify-center items-center rounded-lg z-auto">
+          <div className="absolute inset-0 bg-primary bg-opacity-25 backdrop-blur-sm flex justify-center items-center rounded-lg ">
             {savedMovies?.includes(id) && isLoggedIn ? (
               <button
                 onClick={() => handleUnbookMovie(id)}
-                className="p-2 rounded-full bg-white text-primary hover:opacity-80 transition"
+                className="p-2 rounded-full bg-white text-primary hover:opacity-80 transition "
               >
                 <BsBookmarkPlusFill />
               </button>
@@ -176,18 +139,20 @@ const ListItem = ({ movie }) => {
         onClick={() => {
           navigate("/movie/" + id)
         }}
-        className="text-lg font-semibold cursor-pointer transition duration-300 ease-in-out active:transform active:scale-95 text-secondary dark:text-white hover:text-red-500 dark:hover:text-red-400"
+        className="text-lg your-class font-semibold cursor-pointer transition duration-300 ease-in-out active:transform active:scale-95 text-secondary dark:text-white hover:text-red-500 dark:hover:text-red-400"
         title={title}
       >
         {trimTitle(title)}
       </h1>
       {reviews?.ratingAvg ? (
-        <p className="text-highlight dark:text-highlight-dark flex items-center space-x-1">
+        <p className="text-highlight your-class dark:text-highlight-dark flex items-center space-x-1">
           <span>{reviews?.ratingAvg}</span>
           <AiFillStar className="text-yellow-500" />
         </p>
       ) : (
-        <p className="text-highlight dark:text-highlight-dark">No reviews</p>
+        <p className="text-highlight dark:text-highlight-dark your-class">
+          No reviews
+        </p>
       )}
     </div>
   )
