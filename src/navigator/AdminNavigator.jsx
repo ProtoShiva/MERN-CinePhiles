@@ -32,7 +32,7 @@ export default function AdminNavigator() {
 
   return (
     <>
-      <div className="flex dark:bg-primary bg-white">
+      <div className=" dark:bg-primary bg-white flex">
         <Navbar />
         <div className="flex-1 max-w-screen-xl">
           <Header

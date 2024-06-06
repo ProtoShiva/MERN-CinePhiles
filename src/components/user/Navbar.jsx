@@ -18,19 +18,19 @@ export default function Navbar() {
   }
 
   return (
-    <div className="bg-secondary shadow-sm shadow-gray-500 p-2">
-      <Container className="py-2">
+    <div className="bg-secondary shadow-sm shadow-gray-500">
+      <Container className="bg-lime-500 py-2 px-2">
         <div className="flex justify-between items-center">
           <Link to="/">
             <img src={logo} alt="" className="sm:h-10 h-8" />
           </Link>
 
-          <ul className="flex items-center sm:space-x-4 space-x-4">
+          <ul className="flex items-center sm:space-x-4 space-x-2">
             <li>
               {isLoggedIn && (
                 <Link
                   to={"/watchlist"}
-                  className="text-white font-semibold text-lg cursor-pointer"
+                  className="text-white pl-3 font-semibold text-lg cursor-pointer"
                 >
                   WatchList
                 </Link>
